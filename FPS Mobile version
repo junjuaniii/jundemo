@@ -1,0 +1,45 @@
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    // UI Elements
+    public RectTransform healthBar;
+    public TMPro.TextMeshProUGUI ammoCounter;
+    public TMPro.TextMeshProUGUI scoreCounter;
+    public GameObject crosshair;
+    public GameObject pauseButton;
+
+    // Controls
+    private CharacterController characterController;
+    private Camera playerCamera;
+    private bool isPaused = false;
+
+    private void Start()
+    {
+        // Get references to necessary components
+        characterController = GetComponent<CharacterController>();
+        playerCamera = GetComponentInChildren<Camera>();
+    }
+
+    private void Update()
+    {
+        if (isPaused)
+        {
+            // Handle pause menu logic
+            return;
+        }
+
+        // Handle player movement
+        float horizontal = Input.GetAxis("Horizontal");
+        float vertical = Input.GetAxis("Vertical");
+        Vector3 movement = new Vector3(horizontal, 0, vertical);
+        characterController.Move(movement * Time.deltaTime);
+
+        // Handle player rotation (aiming)
+        float mouseX = Input.GetAxis("Mouse X");
+        float mouseY = Input.GetAxis("Mouse Y");
+        transform.Rotate(Vector3.up, mouseX);
+        playerCamera.transform.Rotate(Vector3.left, mouseY);
+
+        // Handle shooting
+        if (Input.Get
